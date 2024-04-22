@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: records-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/records_db
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    url: jdbc:mysql://localhost:3306/records_db
+    user: root
+    password: root
