@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity(name = "patient")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;

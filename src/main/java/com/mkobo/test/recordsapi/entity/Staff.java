@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity(name = "staff")
 public class Staff {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String uuid;
