@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Entity(name = "staff")
 public class Staff {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String uuid;
     private LocalDateTime registrationDate;
 
-    public Staff(long id, String name, String uuid, LocalDateTime registrationDate) {
+    public Staff(Long id, String name, String uuid, LocalDateTime registrationDate) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
@@ -26,11 +26,11 @@ public class Staff {
     public Staff() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

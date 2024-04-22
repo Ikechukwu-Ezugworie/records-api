@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @Entity(name = "patient")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int age;
     private LocalDateTime lastVisitDate;
 
-    public Patient(long id, String name, int age, LocalDateTime lastVisitDate) {
+    public Patient(Long id, String name, int age, LocalDateTime lastVisitDate) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -26,7 +26,7 @@ public class Patient {
     public Patient() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
