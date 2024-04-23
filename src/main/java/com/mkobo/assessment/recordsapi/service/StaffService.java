@@ -14,6 +14,9 @@ public interface StaffService {
      */
     public StaffPojo creatStaff(String staffName);
 
+
+    public StaffPojo seedStaff(Staff staff);
+
     /**
      * <p>Update a staff by uuid</p>
      * @param uuid unique staff identifier

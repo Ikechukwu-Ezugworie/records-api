@@ -65,4 +65,17 @@ public class StaffServiceImpl implements StaffService {
         log.info("Update existing staff with uuid: {}", uuid);
         return mapper.map(updatedStaff, StaffPojo.class);
     }
+
+
+    @Override
+    public StaffPojo seedStaff(Staff staff) {
+        log.info("Seeding a new staff");
+        Optional<Staff> existingStaff = staffRepository.findByName(staff.getName());
+        if (existingStaff.isPresent()){
+            log.debug("Staff with name: {} already exists", staff.getName());
+            throw new RuntimeException("Staff with name: "+staff.getName()+" already exists");
+        }
+
+        return mapper.map(staffRepository.save(staff), StaffPojo.class);
+    }
 }
