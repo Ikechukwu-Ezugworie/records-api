@@ -1,9 +1,6 @@
 package com.mkobo.assessment.recordsapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -13,13 +10,13 @@ public class Staff {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @Column(unique = true)
     private String uuid;
     private LocalDateTime registrationDate;
 
-    public Staff(Long id, String name, String uuid, LocalDateTime registrationDate) {
-        this.id = id;
+    public Staff(String name, LocalDateTime registrationDate) {
         this.name = name;
-        this.uuid = uuid;
         this.registrationDate = registrationDate;
     }
 

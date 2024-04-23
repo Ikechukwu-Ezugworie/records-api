@@ -13,4 +13,11 @@ public interface StaffService {
      * @return
      */
     public StaffPojo creatStaff(String staffName);
+
+    /**
+     * <p>Update a staff by uuid</p>
+     * @param uuid unique staff identifier
+     * @return
+     */
+    public StaffPojo updateStaff(String uuid, StaffPojo staff);
 }

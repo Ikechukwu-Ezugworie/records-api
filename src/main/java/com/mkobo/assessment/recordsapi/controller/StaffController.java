@@ -5,10 +5,7 @@ import com.mkobo.assessment.recordsapi.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/staff")
@@ -21,9 +18,16 @@ public class StaffController {
         this.staffService = staffService;
     }
 
-    @PostMapping("/create/{name}")
+    @PostMapping("/{name}")
     public ResponseEntity<StaffPojo> createStaff(@PathVariable String name){
         StaffPojo staff = staffService.creatStaff(name);
+        return new ResponseEntity<>(staff, HttpStatus.CREATED);
+    }
+
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity<StaffPojo> updateStaff(@PathVariable String uuid, @RequestBody StaffPojo staffPojo){
+        StaffPojo staff = staffService.updateStaff(uuid, staffPojo);
         return new ResponseEntity<>(staff, HttpStatus.CREATED);
     }
 }

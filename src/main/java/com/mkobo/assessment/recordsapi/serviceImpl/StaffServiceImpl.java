@@ -1,6 +1,7 @@
 package com.mkobo.assessment.recordsapi.serviceImpl;
 
 import com.mkobo.assessment.recordsapi.entity.Staff;
+import com.mkobo.assessment.recordsapi.exception.NotFoundException;
 import com.mkobo.assessment.recordsapi.pojo.StaffPojo;
 import com.mkobo.assessment.recordsapi.repository.StaffRepository;
 import com.mkobo.assessment.recordsapi.service.StaffService;
@@ -30,11 +31,13 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffPojo creatStaff(String staffName) {
         log.info("Creating a new staff");
+
         Optional<Staff> existingStaff = staffRepository.findByName(staffName);
         if (existingStaff.isPresent()){
             log.debug("Staff with name: {} already exists", staffName);
             throw new IllegalArgumentException("Staff with name: "+staffName+" already exists");
         }
+
         Staff staff = new Staff();
         staff.setName(staffName);
         staff.setUuid(UUID.randomUUID().toString());
@@ -42,5 +45,24 @@ public class StaffServiceImpl implements StaffService {
         Staff createdStaff = staffRepository.save(staff);
         log.info("Created staff: {}", createdStaff);
         return mapper.map(createdStaff, StaffPojo.class);
+    }
+
+    @Override
+    public StaffPojo updateStaff(String uuid, StaffPojo staff) {
+        log.info("Attempting to update staff with uuid: {}", uuid);
+
+        Optional<Staff> existingStaff = staffRepository.findByUuid(uuid);
+        if (existingStaff.isEmpty()){
+            log.debug("Staff with uuid: {} does not exist", uuid);
+            throw new NotFoundException("Staff with uuid: "+uuid+" does not exist");
+        }
+
+        Staff updatedStaff = existingStaff.get();
+        updatedStaff.setName(staff.getName());
+        updatedStaff.setRegistrationDate(staff.getRegistrationDate());
+
+        staffRepository.save(updatedStaff);
+        log.info("Update existing staff with uuid: {}", uuid);
+        return mapper.map(updatedStaff, StaffPojo.class);
     }
 }
