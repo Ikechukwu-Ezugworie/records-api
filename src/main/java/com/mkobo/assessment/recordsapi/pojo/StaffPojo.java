@@ -1,21 +1,25 @@
 package com.mkobo.assessment.recordsapi.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
-public class Staff {
+public class StaffPojo {
     private Long id;
     private String name;
     private String uuid;
+
+    @JsonProperty("registration_date")
     private LocalDateTime registrationDate;
 
-    public Staff(long id, String name, String uuid, LocalDateTime registrationDate) {
+    public StaffPojo(long id, String name, String uuid, LocalDateTime registrationDate) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
         this.registrationDate = registrationDate;
     }
 
-    public Staff() {
+    public StaffPojo() {
     }
 
     public long getId() {

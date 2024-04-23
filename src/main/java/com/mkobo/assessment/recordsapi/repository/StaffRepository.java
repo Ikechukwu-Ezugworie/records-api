@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     public Optional<Staff> findByUuid(String uuid);
+
+    public Optional<Staff> findByName(String name);
 }

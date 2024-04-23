@@ -52,7 +52,13 @@ public class PatientController {
                 .body(response);
     }
 
-
+    /**
+     * <p>Endpoint to delete patients who last visted in a given date range</p>
+     * @param startDate
+     * @param endDate
+     * @param staffUUID
+     * @return
+     */
     @DeleteMapping("/profile")
     public ResponseEntity<Object> deletePatientsInRange(
             @RequestParam String startDate, @RequestParam String endDate,
