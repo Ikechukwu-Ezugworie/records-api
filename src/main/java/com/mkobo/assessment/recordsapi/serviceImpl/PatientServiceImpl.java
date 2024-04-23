@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static com.mkobo.assessment.recordsapi.util.Utility.CSV;
+import static com.mkobo.assessment.recordsapi.util.Utility.formatter;
 
 
 @Service
@@ -63,12 +65,13 @@ public class PatientServiceImpl implements PatientService {
     public FileSystemResource downloadPatientProfile(String name, int age, String staffUUID) {
         log.info("Downloading patient's profile with name: {} and age: {}", name, age);
         Optional<Staff> staff = staffRepository.findByUuid(staffUUID);
+
         if (staff.isEmpty()) {
             log.info("Staff with UUID: {} does not exist", staffUUID);
             throw new NotFoundException("Staff with UUID: " + staffUUID + " does not exist");
         }
-        Patient patient = patientRepository
-                .findByNameAndAge(name, age)
+
+        Patient patient = patientRepository.findByNameAndAge(name, age)
                 .orElseThrow(() -> new NotFoundException("Patient with name: " + name + " and age: " + age + " does not exist"));
 
         PatientPojo patientPojo = mapper.map(patient, PatientPojo.class);
@@ -78,7 +81,6 @@ public class PatientServiceImpl implements PatientService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        File file = new File(filePath);
         return new FileSystemResource(filePath);
     }
 
@@ -87,9 +89,24 @@ public class PatientServiceImpl implements PatientService {
      * {@inheritDoc}
      */
     @Override
-    public boolean deletePatientsBetween(LocalDateTime startDate, LocalDateTime endDate, String staffUUID) {
-        staffRepository.findByUuid(staffUUID)
-                .orElseThrow(() -> new NotFoundException("Staff with UUID does not exist"));
-        return false;
+    @Transactional
+    public boolean deletePatientsWithinDateRange(String startDate, String endDate, String staffUUID) {
+        try {
+            log.info("Deleting patients who last visited from: {} to {}", startDate, endDate);
+            Optional<Staff> staff = staffRepository.findByUuid(staffUUID);
+
+            if (staff.isEmpty()) {
+                log.info("Staff with UUID: {} does not exist", staffUUID);
+                throw new NotFoundException("Staff with UUID: " + staffUUID + " does not exist");
+            }
+
+            LocalDateTime start = LocalDateTime.parse(startDate, formatter);
+            LocalDateTime end = LocalDateTime.parse(endDate, formatter);
+            patientRepository.deleteByLastVisitDateBetween(start, end);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Could not delete patients in the given date range becuase: ", e);
+        }
+        return true;
     }
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ public class Utility {
     private static final Logger log = LoggerFactory.getLogger(Utility.class);
     public static final String CSV = ".csv";
     public static final String PROFILE_PREFIX = "Profile-";
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
     /**
      * <p>Maps a List from one type to another</p>

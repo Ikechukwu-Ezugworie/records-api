@@ -14,4 +14,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     public List<Patient> findByAgeLessThanEqual(int maxAge);
 
     public Optional<Patient> findByNameAndAge(String name, int age);
+
+    public void deleteByLastVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

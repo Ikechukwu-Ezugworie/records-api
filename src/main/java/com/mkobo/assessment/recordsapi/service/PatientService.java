@@ -33,6 +33,6 @@ public interface PatientService {
      * @param staffUUID UUID of staff creating this request
      * @return
      */
-    boolean deletePatientsBetween(LocalDateTime startDate, LocalDateTime endDate, String staffUUID);
+    boolean deletePatientsWithinDateRange(String startDate, String endDate, String staffUUID);
 
 }
