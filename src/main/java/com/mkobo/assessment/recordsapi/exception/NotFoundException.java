@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi.exception;
+package com.mkobo.assessment.recordsapi.exception;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 

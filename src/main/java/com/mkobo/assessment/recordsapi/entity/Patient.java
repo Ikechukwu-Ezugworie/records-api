@@ -1,14 +1,22 @@
-package com.mkobo.test.recordsapi.pojo;
+package com.mkobo.assessment.recordsapi.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
+@Entity(name = "patient")
 public class Patient {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int age;
     private LocalDateTime lastVisitDate;
 
-    public Patient(long id, String name, int age, LocalDateTime lastVisitDate) {
+    public Patient(Long id, String name, int age, LocalDateTime lastVisitDate) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -18,7 +26,7 @@ public class Patient {
     public Patient() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -48,5 +56,15 @@ public class Patient {
 
     public void setLastVisitDate(LocalDateTime lastVisitDate) {
         this.lastVisitDate = lastVisitDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", lastVisitDate=" + lastVisitDate +
+                '}';
     }
 }

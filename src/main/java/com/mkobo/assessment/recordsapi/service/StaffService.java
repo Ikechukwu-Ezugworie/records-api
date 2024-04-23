@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi.service;
+package com.mkobo.assessment.recordsapi.service;
 
 import org.springframework.stereotype.Service;
 

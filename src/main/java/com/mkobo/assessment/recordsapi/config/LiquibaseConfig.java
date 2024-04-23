@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi.config;
+package com.mkobo.assessment.recordsapi.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;

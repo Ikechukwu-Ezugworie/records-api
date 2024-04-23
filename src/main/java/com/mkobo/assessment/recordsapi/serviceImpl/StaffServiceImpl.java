@@ -1,6 +1,6 @@
-package com.mkobo.test.recordsapi.serviceImpl;
+package com.mkobo.assessment.recordsapi.serviceImpl;
 
-import com.mkobo.test.recordsapi.service.StaffService;
+import com.mkobo.assessment.recordsapi.service.StaffService;
 import org.springframework.stereotype.Service;
 
 @Service

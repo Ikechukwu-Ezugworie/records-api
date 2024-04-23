@@ -1,22 +1,14 @@
-package com.mkobo.test.recordsapi.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.mkobo.assessment.recordsapi.pojo;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "staff")
 public class Staff {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String uuid;
     private LocalDateTime registrationDate;
 
-    public Staff(Long id, String name, String uuid, LocalDateTime registrationDate) {
+    public Staff(long id, String name, String uuid, LocalDateTime registrationDate) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
@@ -26,11 +18,11 @@ public class Staff {
     public Staff() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

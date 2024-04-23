@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi;
+package com.mkobo.assessment.recordsapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

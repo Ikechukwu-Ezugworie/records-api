@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi.exception;
+package com.mkobo.assessment.recordsapi.exception;
 
 public class ErrorDetails {
 

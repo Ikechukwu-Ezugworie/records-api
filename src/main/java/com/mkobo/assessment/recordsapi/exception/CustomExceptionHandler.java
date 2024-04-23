@@ -1,4 +1,4 @@
-package com.mkobo.test.recordsapi.exception;
+package com.mkobo.assessment.recordsapi.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

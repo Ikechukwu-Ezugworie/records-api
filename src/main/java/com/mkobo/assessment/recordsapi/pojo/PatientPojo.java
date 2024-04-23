@@ -1,32 +1,28 @@
-package com.mkobo.test.recordsapi.entity;
+package com.mkobo.assessment.recordsapi.pojo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "patient")
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class PatientPojo {
     private Long id;
     private String name;
     private int age;
+
+    @JsonProperty("last_visit_date")
     private LocalDateTime lastVisitDate;
 
-    public Patient(Long id, String name, int age, LocalDateTime lastVisitDate) {
+    public PatientPojo(long id, String name, int age, LocalDateTime lastVisitDate) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.lastVisitDate = lastVisitDate;
     }
 
-    public Patient() {
+    public PatientPojo() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
