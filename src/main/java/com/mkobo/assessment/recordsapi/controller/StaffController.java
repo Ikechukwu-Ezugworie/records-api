@@ -2,6 +2,7 @@ package com.mkobo.assessment.recordsapi.controller;
 
 import com.mkobo.assessment.recordsapi.pojo.StaffPojo;
 import com.mkobo.assessment.recordsapi.service.StaffService;
+import jakarta.persistence.Cacheable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,6 +3,9 @@ package com.mkobo.assessment.recordsapi.controller;
 import com.mkobo.assessment.recordsapi.pojo.PatientPojo;
 import com.mkobo.assessment.recordsapi.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.mkobo.assessment.recordsapi.util.Utility.CSV;
@@ -18,6 +20,7 @@ import static com.mkobo.assessment.recordsapi.util.Utility.PROFILE_PREFIX;
 
 @RestController
 @RequestMapping("/api/v1/patients")
+@CacheConfig(cacheNames = "patients")
 public class PatientController {
 
     private final PatientService patientService;
@@ -28,6 +31,7 @@ public class PatientController {
     }
 
     @GetMapping()
+    @Cacheable(value = "patients", keyGenerator = "customKeyGenerator")
     public ResponseEntity<List<PatientPojo>> getPatientsUpToTwoYearsOld(@RequestParam String staffUUID) {
         List<PatientPojo> patient = patientService.getPatientsUpToTwoYearsOld(staffUUID);
         return new ResponseEntity<>(patient, HttpStatus.OK);
@@ -60,6 +64,7 @@ public class PatientController {
      * @return
      */
     @DeleteMapping("/profile")
+    @CacheEvict(cacheNames = "patients", key = "", beforeInvocation = true)
     public ResponseEntity<Object> deletePatientsInRange(
             @RequestParam String startDate, @RequestParam String endDate,
             @RequestParam String staffUUID) {

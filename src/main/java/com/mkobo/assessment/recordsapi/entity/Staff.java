@@ -2,10 +2,11 @@ package com.mkobo.assessment.recordsapi.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity(name = "staff")
-public class Staff {
+public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

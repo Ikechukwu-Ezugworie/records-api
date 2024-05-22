@@ -33,9 +33,9 @@ public class StaffServiceImpl implements StaffService {
         log.info("Creating a new staff");
 
         Optional<Staff> existingStaff = staffRepository.findByName(staffName);
-        if (existingStaff.isPresent()){
+        if (existingStaff.isPresent()) {
             log.debug("Staff with name: {} already exists", staffName);
-            throw new IllegalArgumentException("Staff with name: "+staffName+" already exists");
+            throw new IllegalArgumentException("Staff with name: " + staffName + " already exists");
         }
 
         Staff staff = new Staff();
@@ -52,9 +52,9 @@ public class StaffServiceImpl implements StaffService {
         log.info("Attempting to update staff with uuid: {}", uuid);
 
         Optional<Staff> existingStaff = staffRepository.findByUuid(uuid);
-        if (existingStaff.isEmpty()){
+        if (existingStaff.isEmpty()) {
             log.debug("Staff with uuid: {} does not exist", uuid);
-            throw new NotFoundException("Staff with uuid: "+uuid+" does not exist");
+            throw new NotFoundException("Staff with uuid: " + uuid + " does not exist");
         }
 
         Staff updatedStaff = existingStaff.get();
@@ -71,11 +71,11 @@ public class StaffServiceImpl implements StaffService {
     public StaffPojo seedStaff(Staff staff) {
         log.info("Seeding a new staff");
         Optional<Staff> existingStaff = staffRepository.findByName(staff.getName());
-        if (existingStaff.isPresent()){
+        if (!existingStaff.isPresent()) {
+            return mapper.map(staffRepository.save(staff), StaffPojo.class);
+        } else {
             log.debug("Staff with name: {} already exists", staff.getName());
-            throw new RuntimeException("Staff with name: "+staff.getName()+" already exists");
+            throw new RuntimeException("Staff with name: " + staff.getName() + " already exists");
         }
-
-        return mapper.map(staffRepository.save(staff), StaffPojo.class);
     }
 }
