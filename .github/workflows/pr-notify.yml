@@ -11,33 +11,33 @@ jobs:
     steps:
       - name: Send PR notification to Telegram
         run: |
-          # Get the PR status and the user performing the action
+          # Determine PR action and assign appropriate icon and label
           if [ "${{ github.event.action }}" == "opened" ]; then
             PR_STATUS="New Pull Request"
+            ACTION_LABEL="👤 Opened by"
             ACTION_USER="${{ github.event.pull_request.user.login }}"
-            CREATED_DATE="${{ github.event.pull_request.created_at }}"
-            ACTION_DATE="${CREATED_DATE}"  # For opened PRs, the action date is the creation date
+            ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"  # New PR icon
           elif [ "${{ github.event.action }}" == "edited" ]; then
-            PR_STATUS="Edited Pull Request"
+            PR_STATUS="Updated Pull Request"
+            ACTION_LABEL="🛠 Edited by"
             ACTION_USER="${{ github.actor }}"
-            CREATED_DATE="${{ github.event.pull_request.created_at }}"
             ACTION_DATE="${{ github.event.pull_request.updated_at }}"
             ICON="✏️"  # Edited PR icon
           elif [ "${{ github.event.action }}" == "closed" ]; then
             PR_STATUS="Closed Pull Request"
+            ACTION_LABEL="🚪 Closed by"
             ACTION_USER="${{ github.actor }}"
-            CREATED_DATE="${{ github.event.pull_request.created_at }}"
             ACTION_DATE="${{ github.event.pull_request.closed_at }}"
-            ICON="✅"  # Closed PR icon (check mark)
+            ICON="✅"  # Closed PR icon
           fi
 
-          # Format the dates into a shortened human-readable format (Day, Mon, Day, Year at Time)
-          FORMATTED_CREATED_DATE=$(date -d "${CREATED_DATE}" "+%a, %b %d, %Y at %I:%M %p")
+          # Format the dates for readability (e.g., "Mon, Feb 24, 2025 at 10:00 AM")
+          FORMATTED_CREATED_DATE=$(date -d "${{ github.event.pull_request.created_at }}" "+%a, %b %d, %Y at %I:%M %p")
           FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
 
           # Send the message to Telegram
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
           -d chat_id=$TELEGRAM_CHANNEL_ID \
           -d parse_mode="Markdown" \
-          -d text="$ICON *$PR_STATUS:*%0A%0A*Title:* ${{ github.event.pull_request.title }}%0A*Created by:* ${{ github.event.pull_request.user.login }} on $FORMATTED_CREATED_DATE%0A*Action performed by:* $ACTION_USER on $FORMATTED_ACTION_DATE%0A*PR URL:* [Click here to view PR](${{ github.event.pull_request.html_url }})"
+          -d text="$ICON *$PR_STATUS*%0A📌 **Title:** ${{ github.event.pull_request.title }}%0A👤 **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE%0A🔗 [View PR](${{ github.event.pull_request.html_url }})"
