@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 @Component
 public class CustomKeyGenerator implements KeyGenerator {
 
-    Logger logger = Logger.getLogger(CustomKeyGenerator.class.getName());
+    Logger   logger = Logger.getLogger(CustomKeyGenerator.class.getName());
 
 
     @Override
