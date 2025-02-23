@@ -1,0 +1,21 @@
+name: Pull Request Notification to Telegram
+
+on:
+  pull_request:
+    types: [opened, edited, closed]  # Trigger on PR open, edit, or close
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send PR notification to Telegram
+        run: |
+          curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
+          -d chat_id=$TELEGRAM_CHANNEL_ID \
+          -d text="📌 *New Pull Request:*%0A%0A*Title:* ${{ github.event.pull_request.title }}%0A*Created by:* ${{ github.event.pull_request.user.login }}%0A*PR URL:* [Click here to view PR](${{ github.event.pull_request.html_url }})"
+        env:
+          TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}  # Bot API Token (from BotFather)
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}  # Your channel chat ID
+
+
