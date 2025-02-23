@@ -20,6 +20,7 @@ public class SeedStaff {
 
     @PostConstruct
     public void createAStaff(){
+        log.info("Creating a new staff");
         try {
             Staff staff = new Staff();
             staff.setName("John Doe");
