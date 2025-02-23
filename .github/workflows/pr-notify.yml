@@ -14,21 +14,21 @@ jobs:
           # Determine PR action and assign appropriate icon and label
           if [ "${{ github.event.action }}" == "opened" ]; then
             PR_STATUS="New Pull Request"
-            ACTION_LABEL="👤 Opened by"
+            ACTION_LABEL="Opened by"
             ACTION_USER="${{ github.event.pull_request.user.login }}"
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"  # New PR icon
           elif [ "${{ github.event.action }}" == "edited" ]; then
             PR_STATUS="Updated Pull Request"
-            ACTION_LABEL="🛠 Edited by"
+            ACTION_LABEL="Edited by"
             ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.updated_at }}"
+            ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="✏️"  # Edited PR icon
           elif [ "${{ github.event.action }}" == "closed" ]; then
             PR_STATUS="Closed Pull Request"
             ACTION_LABEL="🚪 Closed by"
             ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.closed_at }}"
+            ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="✅"  # Closed PR icon
           fi
 
