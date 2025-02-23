@@ -53,4 +53,14 @@ public class PatientPojo {
     public void setLastVisitDate(LocalDateTime lastVisitDate) {
         this.lastVisitDate = lastVisitDate;
     }
+
+    @Override
+    public String toString() {
+        return "PatientPojo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", lastVisitDate=" + lastVisitDate +
+                '}';
+    }
 }
