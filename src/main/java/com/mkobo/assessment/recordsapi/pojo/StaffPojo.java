@@ -53,4 +53,14 @@ public class StaffPojo {
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+    @Override
+    public String toString() {
+        return "StaffPojo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", registrationDate=" + registrationDate +
+                '}';
+    }
 }
