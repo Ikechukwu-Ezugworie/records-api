@@ -40,4 +40,4 @@ jobs:
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
           -d chat_id=$TELEGRAM_CHANNEL_ID \
           -d parse_mode="Markdown" \
-          -d text="$ICON *$PR_STATUS*%0A📌 **Title:** ${{ github.event.pull_request.title }}%0A👤 **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE%0A🔗 [View PR](${{ github.event.pull_request.html_url }})"
+          -d text="$ICON *$PR_STATUS*%0A📌 **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE%0A [View PR](${{ github.event.pull_request.html_url }})"
