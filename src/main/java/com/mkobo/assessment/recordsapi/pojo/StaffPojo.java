@@ -56,7 +56,7 @@ public class StaffPojo {
 
     @Override
     public String toString() {
-        return "StaffPojo{" +
+        return "StaffPojo{ " +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", uuid='" + uuid + '\'' +
