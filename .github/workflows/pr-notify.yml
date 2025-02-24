@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Send PR notification to Telegram
         run: |
-          # Determine PR action and assign appropriate icon and label
+        # Determine PR action and assign appropriate icon and label
           if [ "${{ github.event.action }}" == "opened" ]; then
             PR_STATUS="New Pull Request"
             ACTION_USER="${{ github.event.pull_request.user.login }}"
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"
             SHOW_ACTION_LABEL=false  # Hide action label for "opened"
-#          elif [ "${{ github.event.action }}" == "closed" ]; then
-          else
+          elif [ "${{ github.event.action }}" == "closed" ]; then
+#          else
             # Check if the PR was merged
             if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
               PR_STATUS="Merged Pull Request"
@@ -40,11 +40,11 @@ jobs:
           FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
 
           # Construct the text message
-          MESSAGE="$ICON *$PR_STATUS*%0A**Title:** ${{ github.event.pull_request.title }}%0A**Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
+          MESSAGE="$ICON *$PR_STATUS*%0A **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
 
           # Append the action label only if SHOW_ACTION_LABEL is true
           if [ "$SHOW_ACTION_LABEL" = true ]; then
-            MESSAGE="$MESSAGE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE"
+            MESSAGE="$MESSAGE%0A*$ACTION_LABEL*: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE"
           fi
 
           # Append the PR URL
