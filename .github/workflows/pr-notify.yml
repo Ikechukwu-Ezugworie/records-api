@@ -18,19 +18,20 @@ jobs:
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"
             SHOW_ACTION_LABEL=false  # Hide action label for "opened"
-          elif [ "${{ github.event.action }}" == "edited" ]; then
-            PR_STATUS="Updated Pull Request"
-            ACTION_LABEL="🛠 Edited by"
-            ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.updated_at }}"
-            ICON="✏️"
-            SHOW_ACTION_LABEL=true
           elif [ "${{ github.event.action }}" == "closed" ]; then
-            PR_STATUS="Closed Pull Request"
-            ACTION_LABEL="🚪 Closed by"
+
+      # Check if the PR was merged
+            if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+            PR_STATUS="Merged Pull Request"
+            ACTION_LABEL="Merged by"
+            ICON="✅"
+            else
+            PR_STATUS="Declined Pull Request"
+            ACTION_LABEL="Declined by"
+            ICON="❌"
+            fi
             ACTION_USER="${{ github.actor }}"
             ACTION_DATE="${{ github.event.pull_request.closed_at }}"
-            ICON="✅"
             SHOW_ACTION_LABEL=true
           fi
 
