@@ -2,7 +2,7 @@ name: Pull Request Notification to Telegram
 
 on:
   pull_request:
-    types: [opened, closed]  # Trigger on PR open, or close
+    types: [opened, edited, closed]  # Trigger on PR open, or close
 
 jobs:
   notify:
@@ -40,7 +40,7 @@ jobs:
           FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
 
           # Construct the text message
-          MESSAGE="$ICON *$PR_STATUS*%0A **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
+          MESSAGE="$ICON *$PR_STATUS*%0A**Title:** ${{ github.event.pull_request.title }}%0A**Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
 
           # Append the action label only if SHOW_ACTION_LABEL is true
           if [ "$SHOW_ACTION_LABEL" = true ]; then
@@ -48,7 +48,7 @@ jobs:
           fi
 
           # Append the PR URL
-          MESSAGE="$MESSAGE%0A [View PR here](${{ github.event.pull_request.html_url }})"
+          MESSAGE="$MESSAGE%0A[View PR here](${{ github.event.pull_request.html_url }})"
 
           # Send the message to Telegram
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
