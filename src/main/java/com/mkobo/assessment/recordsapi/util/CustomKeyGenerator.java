@@ -12,11 +12,13 @@ public class CustomKeyGenerator implements KeyGenerator {
 
     Logger logger = Logger.getLogger(CustomKeyGenerator.class.getName());
 
+    private static final String SEPARATOR = "_";
+
 
     @Override
     public Object generate(Object target, Method method, Object... params) {
-        return target.getClass().getSimpleName() + "_"
-                + method.getName() + "_"
-                + StringUtils.arrayToDelimitedString(params, "_");
+        return target.getClass().getSimpleName() + SEPARATOR
+                + method.getName() + SEPARATOR
+                + StringUtils.arrayToDelimitedString(params, SEPARATOR);
     }
 }
