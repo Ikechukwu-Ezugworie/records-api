@@ -18,17 +18,16 @@ jobs:
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"
             SHOW_ACTION_LABEL=false  # Hide action label for "opened"
-          elif [ "${{ github.event.action }}" == "closed" ]; then
-
-      # Check if the PR was merged
+          else [ "${{ github.event.action }}" == "closed" ]; then
+            # Check if the PR was merged
             if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-            PR_STATUS="Merged Pull Request"
-            ACTION_LABEL="Merged by"
-            ICON="✅"
+              PR_STATUS="Merged Pull Request"
+              ACTION_LABEL="Merged by"
+              ICON="✅"
             else
-            PR_STATUS="Declined Pull Request"
-            ACTION_LABEL="Declined by"
-            ICON="❌"
+              PR_STATUS="Declined Pull Request"
+              ACTION_LABEL="Declined by"
+              ICON="❌"
             fi
             ACTION_USER="${{ github.actor }}"
             ACTION_DATE="${{ github.event.pull_request.closed_at }}"
@@ -55,6 +54,7 @@ jobs:
           -d chat_id=$TELEGRAM_CHANNEL_ID \
           -d parse_mode="Markdown" \
           -d text="$MESSAGE"
+
         env:
           TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}  # Bot API Token (from BotFather)
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}  # Your channel chat ID
