@@ -2,7 +2,7 @@ name: Pull Request Notification to Telegram
 
 on:
   pull_request:
-    types: [opened, edited, closed]  # Trigger on PR open, edit, or close
+    types: [opened, closed]  # Trigger on PR open, or close
 
 jobs:
   notify:
@@ -18,7 +18,8 @@ jobs:
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
             ICON="🚀"
             SHOW_ACTION_LABEL=false  # Hide action label for "opened"
-          elif [ "${{ github.event.action }}" == "closed" ]; then
+#          elif [ "${{ github.event.action }}" == "closed" ]; then
+          else
             # Check if the PR was merged
             if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
               PR_STATUS="Merged Pull Request"
