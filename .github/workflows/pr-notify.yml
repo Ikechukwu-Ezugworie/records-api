@@ -14,33 +14,46 @@ jobs:
           # Determine PR action and assign appropriate icon and label
           if [ "${{ github.event.action }}" == "opened" ]; then
             PR_STATUS="New Pull Request"
-            ACTION_LABEL="Opened by"
             ACTION_USER="${{ github.event.pull_request.user.login }}"
             ACTION_DATE="${{ github.event.pull_request.created_at }}"
-            ICON="🚀"  # New PR icon
+            ICON="🚀"
+            SHOW_ACTION_LABEL=false  # Hide action label for "opened"
           elif [ "${{ github.event.action }}" == "edited" ]; then
             PR_STATUS="Updated Pull Request"
-            ACTION_LABEL="Edited by"
+            ACTION_LABEL="🛠 Edited by"
             ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.created_at }}"
-            ICON="✏️"  # Edited PR icon
+            ACTION_DATE="${{ github.event.pull_request.updated_at }}"
+            ICON="✏️"
+            SHOW_ACTION_LABEL=true
           elif [ "${{ github.event.action }}" == "closed" ]; then
             PR_STATUS="Closed Pull Request"
             ACTION_LABEL="🚪 Closed by"
             ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.created_at }}"
-            ICON="✅"  # Closed PR icon
+            ACTION_DATE="${{ github.event.pull_request.closed_at }}"
+            ICON="✅"
+            SHOW_ACTION_LABEL=true
           fi
 
-          # Format the dates for readability (e.g., "Mon, Feb 24, 2025 at 10:00 AM")
+          # Format the dates for readability
           FORMATTED_CREATED_DATE=$(date -d "${{ github.event.pull_request.created_at }}" "+%a, %b %d, %Y at %I:%M %p")
           FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
+
+          # Construct the text message
+          MESSAGE="$ICON *$PR_STATUS*%0A **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
+
+          # Append the action label only if SHOW_ACTION_LABEL is true
+          if [ "$SHOW_ACTION_LABEL" = true ]; then
+            MESSAGE="$MESSAGE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE"
+          fi
+
+          # Append the PR URL
+          MESSAGE="$MESSAGE%0A [View PR here](${{ github.event.pull_request.html_url }})"
 
           # Send the message to Telegram
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
           -d chat_id=$TELEGRAM_CHANNEL_ID \
           -d parse_mode="Markdown" \
-          -d text="$ICON *$PR_STATUS*%0A📌 **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE%0A$ACTION_LABEL: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE%0A [View PR](${{ github.event.pull_request.html_url }})"
+          -d text="$MESSAGE"
         env:
           TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}  # Bot API Token (from BotFather)
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}  # Your channel chat ID
