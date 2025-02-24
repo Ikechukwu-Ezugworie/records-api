@@ -2,7 +2,7 @@ name: Pull Request Notification to Telegram
 
 on:
   pull_request:
-    types: [opened, edited, closed]  # Trigger on PR open, or close
+    types: [ opened, edited, closed ]  # Trigger on PR open, or close
 
 jobs:
   notify:
@@ -11,50 +11,50 @@ jobs:
     steps:
       - name: Send PR notification to Telegram
         run: |
-        # Determine PR action and assign appropriate icon and label
-          if [ "${{ github.event.action }}" == "opened" ]; then
-            PR_STATUS="New Pull Request"
-            ACTION_USER="${{ github.event.pull_request.user.login }}"
-            ACTION_DATE="${{ github.event.pull_request.created_at }}"
-            ICON="🚀"
-            SHOW_ACTION_LABEL=false  # Hide action label for "opened"
-          elif [ "${{ github.event.action }}" == "closed" ]; then
-#          else
-            # Check if the PR was merged
-            if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-              PR_STATUS="Merged Pull Request"
-              ACTION_LABEL="Merged by"
-              ICON="✅"
-            else
-              PR_STATUS="Declined Pull Request"
-              ACTION_LABEL="Declined by"
-              ICON="❌"
-            fi
-            ACTION_USER="${{ github.actor }}"
-            ACTION_DATE="${{ github.event.pull_request.closed_at }}"
-            SHOW_ACTION_LABEL=true
-          fi
+          # Determine PR action and assign appropriate icon and label
+               if [ "${{ github.event.action }}" == "opened" ]; then
+               PR_STATUS="New Pull Request"
+               ACTION_USER="${{ github.event.pull_request.user.login }}"
+               ACTION_DATE="${{ github.event.pull_request.created_at }}"
+               ICON="🚀"
+               SHOW_ACTION_LABEL=false  # Hide action label for "opened"
+               elif [ "${{ github.event.action }}" == "closed" ]; then
+          #          else
+          # Check if the PR was merged
+               if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+               PR_STATUS="Merged Pull Request"
+               ACTION_LABEL="Merged by"
+               ICON="✅"
+               else
+               PR_STATUS="Declined Pull Request"
+               ACTION_LABEL="Declined by"
+               ICON="❌"
+               fi
+               ACTION_USER="${{ github.actor }}"
+               ACTION_DATE="${{ github.event.pull_request.closed_at }}"
+               SHOW_ACTION_LABEL=true
+               fi
 
           # Format the dates for readability
-          FORMATTED_CREATED_DATE=$(date -d "${{ github.event.pull_request.created_at }}" "+%a, %b %d, %Y at %I:%M %p")
-          FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
+               FORMATTED_CREATED_DATE=$(date -d "${{ github.event.pull_request.created_at }}" "+%a, %b %d, %Y at %I:%M %p")
+               FORMATTED_ACTION_DATE=$(date -d "${ACTION_DATE}" "+%a, %b %d, %Y at %I:%M %p")
 
           # Construct the text message
-          MESSAGE="$ICON *$PR_STATUS*%0A **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
+               MESSAGE="$ICON *$PR_STATUS*%0A **Title:** ${{ github.event.pull_request.title }}%0A **Created by:** ${{ github.event.pull_request.user.login }} | 🗓 $FORMATTED_CREATED_DATE"
 
           # Append the action label only if SHOW_ACTION_LABEL is true
-          if [ "$SHOW_ACTION_LABEL" = true ]; then
-            MESSAGE="$MESSAGE%0A*$ACTION_LABEL*: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE"
-          fi
+               if [ "$SHOW_ACTION_LABEL" = true ]; then
+               MESSAGE="$MESSAGE%0A*$ACTION_LABEL*: $ACTION_USER | 🗓 $FORMATTED_ACTION_DATE"
+               fi
 
           # Append the PR URL
-          MESSAGE="$MESSAGE%0A[View PR here](${{ github.event.pull_request.html_url }})"
+               MESSAGE="$MESSAGE%0A[View PR here](${{ github.event.pull_request.html_url }})"
 
           # Send the message to Telegram
-          curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
-          -d chat_id=$TELEGRAM_CHANNEL_ID \
-          -d parse_mode="Markdown" \
-          -d text="$MESSAGE"
+               curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_API/sendMessage" \
+               -d chat_id=$TELEGRAM_CHANNEL_ID \
+               -d parse_mode="Markdown" \
+               -d text="$MESSAGE"
 
         env:
           TELEGRAM_BOT_API: ${{ secrets.TELEGRAM_BOT_API }}  # Bot API Token (from BotFather)
