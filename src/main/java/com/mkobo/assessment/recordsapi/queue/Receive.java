@@ -29,7 +29,7 @@ public class Receive {
     @PostConstruct
     public void init() {
         try (Channel channel = queueConfig.getChannel()) {
-//            log.info(" [*] Waiting for messages. To exit press CTRL+C");
+            log.info(" [*] Waiting for messages. To exit press CTRL+C");
 //            DeliverCallback deliverCallback = (consumerTag, delivery) -> {
 //                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
 //                log.info(" [x] Received '{}'", message);
